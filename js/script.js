@@ -15,19 +15,25 @@ const changeActiveArticle = function (event) {
   for (let activeArticle of activeArticles) {
     activeArticle.classList.remove("active");
   }
+  /* get clicked element */
+  const clickedElement = this;
+
+  /* add class 'active' to the clicked link */
+  clickedElement.classList.add("active");
+
   /* get 'href' attribute from the clicked link */
-  console.log(event);
-  const clickedElement = event.target;
-  console.log(clickedElement);
   const articleSelector = clickedElement.getAttribute("href");
-  console.log(articleSelector);
-  /* find the correct article using the selector (value of 'href' attribute) */
+
+  /* find the correct article*/
   const targetArticle = document.querySelector(articleSelector);
+
   /* add class 'active' to the correct article */
   targetArticle.classList.add("active");
 };
+
+/* find all links to articles and add event listeners */
 const links = document.querySelectorAll(".titles a");
 for (let link of links) {
-  console.log(link);
+  console.log(`Added event listener to element`, link);
   link.addEventListener("click", changeActiveArticle);
 }
