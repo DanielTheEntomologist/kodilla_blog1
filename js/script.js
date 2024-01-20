@@ -76,6 +76,6 @@ generateTitleLinks();
 /* find all links to articles and add event listeners */
 const links = document.querySelectorAll(".titles a");
 for (let link of links) {
-  console.log(`Added event listener to element`, link);
+  console.log("Added event listener to element", link);
   link.addEventListener("click", changeActiveArticle);
 }
