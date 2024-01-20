@@ -36,6 +36,43 @@ const changeActiveArticle = function (event) {
   targetArticle.classList.add("active");
 };
 
+const optArticleSelector = ".post",
+  optTitleSelector = ".post-title",
+  optTitleListSelector = ".titles";
+
+function generateTitleLinks() {
+  /* remove contents of titleList */
+  const titleList = document.querySelector(optTitleListSelector);
+  titleList.innerHTML = "";
+
+  /* find all the articles and save them to variable: articles */
+  const articles = document.querySelectorAll(optArticleSelector);
+  console.log(articles);
+
+  let html = "";
+
+  for (let article of articles) {
+    /* get the article id */
+    const articleId = article.getAttribute("id");
+
+    /* find the title element */
+    const articleTitle = article.querySelector(optTitleSelector);
+    console.log(articleTitle.innerHTML);
+    /* get the title from the title element */
+    const articleTitleText = articleTitle.innerHTML;
+
+    /* create HTML of the link */
+    const linkHTML = `</><li><a href="#${articleId}" class="active"><span>${articleTitleText}</span></a></li>`;
+
+    /* insert link into html variable */
+    html = html + linkHTML;
+  }
+
+  titleList.innerHTML = html;
+}
+
+generateTitleLinks();
+
 /* find all links to articles and add event listeners */
 const links = document.querySelectorAll(".titles a");
 for (let link of links) {
