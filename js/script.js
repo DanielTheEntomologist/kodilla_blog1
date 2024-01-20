@@ -6,6 +6,11 @@
 // const activateArticle = function (event) {};
 
 const changeActiveArticle = function (event) {
+  console.log("Link was clicked!");
+
+  /* prevent default action for event */
+  event.preventDefault();
+
   /* remove class 'active' from all article links  */
   for (let link of links) {
     link.classList.remove("active");
