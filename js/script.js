@@ -47,7 +47,7 @@ function generateTitleLinks() {
 
   /* find all the articles and save them to variable: articles */
   const articles = document.querySelectorAll(optArticleSelector);
-  console.log(articles);
+  // console.log(articles);
 
   let html = "";
 
@@ -62,13 +62,17 @@ function generateTitleLinks() {
     const articleTitleText = articleTitle.innerHTML;
 
     /* create HTML of the link */
-    const linkHTML = `</><li><a href="#${articleId}" class="active"><span>${articleTitleText}</span></a></li>`;
-
+    const linkHTML = `<li><a href="#${articleId}"><span>${articleTitleText}</span></a></li>`;
+    console.log(linkHTML);
     /* insert link into html variable */
     html = html + linkHTML;
   }
-
+  console.log(html);
   titleList.innerHTML = html;
+  /* set first article as active */
+  const firstArticleLink = titleList.firstElementChild.firstElementChild;
+  console.log(firstArticleLink);
+  firstArticleLink.classList.add("active");
 }
 
 generateTitleLinks();
