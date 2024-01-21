@@ -1,2 +1,1 @@
-; use only linefeed as line ending (no carriage return) - this is the default on Unix systems
 * text eol=lf
