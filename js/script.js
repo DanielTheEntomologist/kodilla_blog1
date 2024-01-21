@@ -57,21 +57,20 @@ function generateTitleLinks() {
 
     /* find the title element */
     const articleTitle = article.querySelector(optTitleSelector);
-    console.log(articleTitle.innerHTML);
+
     /* get the title from the title element */
     const articleTitleText = articleTitle.innerHTML;
 
     /* create HTML of the link */
     const linkHTML = `<li><a href="#${articleId}"><span>${articleTitleText}</span></a></li>`;
-    console.log(linkHTML);
+
     /* insert link into html variable */
     html = html + linkHTML;
   }
-  console.log(html);
+
   titleList.innerHTML = html;
   /* set first article as active */
   const firstArticleLink = titleList.firstElementChild.firstElementChild;
-  console.log(firstArticleLink);
   firstArticleLink.classList.add("active");
 }
 
