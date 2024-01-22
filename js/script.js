@@ -41,6 +41,13 @@
   };
 
   const generateTitleLinks = function (additionalTitleListSelector = '') {
+    /* get currently active article */
+    const previouslyActiveArticle = document.querySelector('.post.active');
+    console.log('previouslyActiveArticle', previouslyActiveArticle);
+    /* create a new selector that selects all article links matching the href attribute of the active article */
+    const previouslyActiveArticleSelector = `.titles>li>a[href="#${previouslyActiveArticle.id}"]`;
+    console.log('activeArticleSelector', previouslyActiveArticleSelector);
+
     /* remove contents of titleList */
     const titleList = document.querySelector(optTitleListSelector);
     titleList.innerHTML = '';
@@ -71,9 +78,18 @@
     }
 
     titleList.innerHTML = html;
-    /* set first article as active */
-    const firstArticleLink = titleList.firstElementChild.firstElementChild;
-    firstArticleLink.classList.add('active');
+
+    if (previouslyActiveArticle == null) {
+      /* select first article link and add active class to it */
+      const firstArticleLink = document.querySelector('.titles a');
+      firstArticleLink.classList.add('active');
+    } else {
+      const ActiveArticleLink = document.querySelector(
+        previouslyActiveArticleSelector
+      );
+      console.log('ActiveArticleLink', ActiveArticleLink);
+      ActiveArticleLink.classList.add('active');
+    }
 
     /* add event listeners after generating links */
     addClicklListenersToArticleLinks();
@@ -87,11 +103,10 @@
     for (let article of articles) {
       /* find tags wrapper (list)*/
       const tagList = article.querySelector(optArticleTagsSelector);
-      console.log('existing taglist', tagList.innerHTML);
 
       /* get tags from data-tags attribute */
       const articleTags = article.getAttribute('data-tags');
-      console.log('articleTag extracted', articleTags);
+
       /* split tags into array */
       const articleTagsArray = articleTags.split(' ');
 
@@ -110,7 +125,7 @@
       }
       /* insert HTML of all the links into the tags wrapper */
       tagList.innerHTML = html;
-      console.log('new taglist', tagList.innerHTML);
+
       /* END LOOP: for every article: */
     }
   };
@@ -163,17 +178,14 @@
 
     /* START LOOP: for each link */
     for (let tag of tags) {
-      console.log('Adding listener to tags', tag);
       /* add tagClickHandler as event listener for that link */
       tag.addEventListener('click', tagClickHandler);
-      /* END LOOP: for each link */
     }
   };
   const addClicklListenersToArticleLinks = function () {
     /* find all links to articles and add event listeners */
     const links = document.querySelectorAll('.titles a');
     for (let link of links) {
-      console.log('Added event listener to element', link);
       link.addEventListener('click', changeActiveArticle);
     }
   };
