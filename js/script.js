@@ -1,6 +1,12 @@
 'use strict';
 
 {
+  const optArticleSelector = '.post',
+    optTitleSelector = '.post-title',
+    optTitleListSelector = '.titles',
+    optArticleTagsSelector = '.post-tags .list';
+  // optTagsSelector = 'a[href^="#tag-}"]';
+
   const changeActiveArticle = function (event) {
     console.log('Link was clicked!');
 
@@ -32,18 +38,15 @@
     targetArticle.classList.add('active');
   };
 
-  const optArticleSelector = '.post',
-    optTitleSelector = '.post-title',
-    optTitleListSelector = '.titles',
-    optArticleTagsSelector = '.post-tags .list';
-
-  const generateTitleLinks = function () {
+  const generateTitleLinks = function (additionalTitleListSelector = '') {
     /* remove contents of titleList */
     const titleList = document.querySelector(optTitleListSelector);
     titleList.innerHTML = '';
 
     /* find all the articles and save them to variable: articles */
-    const articles = document.querySelectorAll(optArticleSelector);
+    const articles = document.querySelectorAll(
+      optArticleSelector + additionalTitleListSelector
+    );
     // console.log(articles);
 
     let html = '';
@@ -107,16 +110,71 @@
     }
   };
 
-  const tagClickHandler = function (event) {};
+  const tagClickHandler = function (event) {
+    /* prevent default action for this event */
+    event.preventDefault();
+
+    // My algorithm is similar enough to the one in the course, so I'll leave it as is.
+    // remove active class from all tags
+    /* get clicked tag element*/
+    const clickedElement = this;
+    console.log('clickedElement:', clickedElement);
+    /* get href attribute from clicked tag */
+    const href = clickedElement.getAttribute('href');
+    /* extract tag from href attribute */
+    const tag = href.replace('#tag-', '');
+
+    /* find all active tags  that have a href starting with #tag-*/
+    const previouslyActiveTags = document.querySelectorAll(
+      'a.active[href^="#tag-"]'
+    );
+    console.log('previouslyActiveTags:', previouslyActiveTags);
+    /* Loop over active tags and remove active class */
+    for (let tag of previouslyActiveTags) {
+      console.log('Removing active class from', tag);
+      tag.classList.remove('active');
+    }
+
+    // add active class to all tags with clicked tag
+    /* find all tags with the same tag */
+    const newActiveTags = document.querySelectorAll(`a[href="#tag-${tag}"]`);
+    console.log('newActiveTags:', newActiveTags);
+
+    /* Loop over tags and add active class */
+    for (let tag of newActiveTags) {
+      tag.classList.add('active');
+    }
+    // regenerate article list with active tags only
+    /* create a new selector that selects all articles having class .post and data-tags containing tag */
+    const newArticleSelector = `.post[data-tags~="${tag}"]`;
+    console.log('newArticleSelector:', newArticleSelector);
+    /* call new modified generateTags function */
+    generateTitleLinks(newArticleSelector);
+  };
+
+  const addClickListenersToTags = function () {
+    /* find all links to tags */
+    const tags = document.querySelectorAll('a[href^="#tag-"]');
+
+    /* START LOOP: for each link */
+    for (let tag of tags) {
+      console.log('Adding listener to tags', tag);
+      /* add tagClickHandler as event listener for that link */
+      tag.addEventListener('click', tagClickHandler);
+      /* END LOOP: for each link */
+    }
+  };
+  const addClicklListenersToArticleLinks = function () {
+    /* find all links to articles and add event listeners */
+    const links = document.querySelectorAll('.titles a');
+    for (let link of links) {
+      console.log('Added event listener to element', link);
+      link.addEventListener('click', changeActiveArticle);
+    }
+  };
 
   generateTags();
-
   generateTitleLinks();
-
-  /* find all links to articles and add event listeners */
-  const links = document.querySelectorAll('.titles a');
-  for (let link of links) {
-    console.log('Added event listener to element', link);
-    link.addEventListener('click', changeActiveArticle);
-  }
+  addClickListenersToTags();
+  addClicklListenersToArticleLinks();
 }
