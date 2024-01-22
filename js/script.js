@@ -13,6 +13,8 @@
     /* prevent default action for event */
     event.preventDefault();
 
+    const links = document.querySelectorAll('.titles a');
+
     /* remove class 'active' from all article links  */
     for (let link of links) {
       link.classList.remove('active');
@@ -72,6 +74,9 @@
     /* set first article as active */
     const firstArticleLink = titleList.firstElementChild.firstElementChild;
     firstArticleLink.classList.add('active');
+
+    /* add event listeners after generating links */
+    addClicklListenersToArticleLinks();
   };
 
   const generateTags = function () {
@@ -176,5 +181,5 @@
   generateTags();
   generateTitleLinks();
   addClickListenersToTags();
-  addClicklListenersToArticleLinks();
+  // addClicklListenersToArticleLinks();
 }
