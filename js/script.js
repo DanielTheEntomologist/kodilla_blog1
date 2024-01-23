@@ -7,7 +7,9 @@
     optArticleTagsSelector = '.post-tags .list',
     // optTagsSelector = 'a[href^="#tag-}"]';
     optArticleAuthorSelector = '.post-author',
-    optTagsListSelector = '.tags.list';
+    optTagsListSelector = '.tags.list',
+    optCloudClassCount = 5,
+    optCloudClassPrefix = 'tag-size-';
 
   const changeActiveArticle = function (event) {
     console.log('Link was clicked!');
@@ -158,10 +160,12 @@
 
     /* construct HTML of the all the links with counts */
     let allTags = [];
+    const tagsParams = calculateTagsParams(allTagsCounter);
     for (let tag in allTagsCounter) {
-      allTags.push(
-        `<li><a href="#tag-${tag}">${tag}</a> <span>(${allTagsCounter[tag]})</span></li>`
-      );
+      const tagCount = allTagsCounter[tag];
+      const tagClass = calculateTagClass(tagCount, tagsParams);
+      const tagLinkHTML = `<li><a href="#tag-${tag}" class="${tagClass}">${tag}</a> <span>(${tagCount})</span></li>`;
+      allTags.push(tagLinkHTML);
     }
 
     /* find list of tags in right column */
@@ -170,6 +174,27 @@
     /*  add html from allTags to tagList */
     tagList.innerHTML = allTags.join('\n');
     console.log('allTagsCounter', allTagsCounter);
+  };
+
+  const calculateTagsParams = function (tagsCounter) {
+    const params = { max: -Infinity, min: Infinity };
+    for (let tag in tagsCounter) {
+      if (tagsCounter[tag] > params.max) {
+        params.max = tagsCounter[tag];
+      }
+      if (tagsCounter[tag] < params.min) {
+        params.min = tagsCounter[tag];
+      }
+    }
+    return params;
+  };
+
+  const calculateTagClass = function (count, params) {
+    const reducedCount = count - params.min;
+    const range = params.max - params.min;
+    const percentage = reducedCount / range;
+    const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+    return optCloudClassPrefix + classNumber;
   };
 
   const tagClickHandler = function (event) {
