@@ -9,7 +9,8 @@
     optArticleAuthorSelector = '.post-author',
     optTagsListSelector = '.tags.list',
     optCloudClassCount = 5,
-    optCloudClassPrefix = 'tag-size-';
+    optCloudClassPrefix = 'tag-size-',
+    optAuthorsList = '.authors.list';
 
   const changeActiveArticle = function (event) {
     console.log('Link was clicked!');
@@ -232,9 +233,10 @@
   };
 
   const generateAuthors = function () {
+    console.log('generateAuthors');
     /* find all articles */
     const articles = document.querySelectorAll(optArticleSelector);
-
+    console.log('articles:', articles);
     /* START LOOP: for every article: */
     for (let article of articles) {
       /* find tags wrapper (list)*/
@@ -247,7 +249,42 @@
       const authorID = articleAuthor.replace(' ', '-');
       const authorLink = `by <a href="#author-${authorID}">${articleAuthor}</a>`;
       author.innerHTML = authorLink;
+      console.log('author:', authorLink);
     }
+  };
+
+  const generateAuthorsList = function () {
+    /* [NEW] create a new variable allTags with an empty array */
+
+    let authorsArticleCounter = {};
+    /* find all articles */
+    const articles = document.querySelectorAll(optArticleSelector);
+
+    for (let article of articles) {
+      const articleAuthor = article.getAttribute('data-author');
+
+      if (authorsArticleCounter[articleAuthor] == undefined) {
+        authorsArticleCounter[articleAuthor] = 1;
+      } else {
+        authorsArticleCounter[articleAuthor]++;
+      }
+    }
+
+    /* construct HTML of the all the links with counts */
+    let allAuthors = [];
+
+    for (let author in authorsArticleCounter) {
+      const articleCount = authorsArticleCounter[author];
+
+      const authorLinkHTML = `<li><a href="#author-${author}">${author}</a><span> (${articleCount})</span> </li>`;
+      allAuthors.push(authorLinkHTML);
+    }
+
+    /* find list of tags in right column */
+    const authorsList = document.querySelector(optAuthorsList);
+
+    /*  add html from allTags to tagList */
+    authorsList.innerHTML = allAuthors.join('\n');
   };
 
   const authorClickHandler = function (event) {
@@ -333,6 +370,7 @@
   generateAuthors();
   generateTitleLinks();
   generateTagList();
+  generateAuthorsList();
   addClickListenersToTags();
   addClickListenersToAuthors();
   // addClicklListenersToArticleLinks();
