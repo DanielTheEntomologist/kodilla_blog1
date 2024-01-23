@@ -13,8 +13,6 @@
     optAuthorsList = '.authors.list';
 
   const changeActiveArticle = function (event) {
-    console.log('Link was clicked!');
-
     /* prevent default action for event */
     event.preventDefault();
 
@@ -48,10 +46,9 @@
   const generateTitleLinks = function (additionalTitleListSelector = '') {
     /* get currently active article */
     const previouslyActiveArticle = document.querySelector('.post.active');
-    console.log('previouslyActiveArticle', previouslyActiveArticle);
+
     /* create a new selector that selects all article links matching the href attribute of the active article */
     const previouslyActiveArticleSelector = `.titles>li>a[href="#${previouslyActiveArticle.id}"]`;
-    console.log('activeArticleSelector', previouslyActiveArticleSelector);
 
     /* remove contents of titleList */
     const titleList = document.querySelector(optTitleListSelector);
@@ -61,7 +58,6 @@
     const articles = document.querySelectorAll(
       optArticleSelector + additionalTitleListSelector
     );
-    // console.log(articles);
 
     let html = '';
 
@@ -84,16 +80,11 @@
 
     titleList.innerHTML = html;
 
+    /* try to select previously active article link */
     const ActiveArticleLink = document.querySelector(
       previouslyActiveArticleSelector
     );
-
-    if (ActiveArticleLink == null) {
-      /* find first article link and add class 'active' to it */
-      // const firstArticleLink = document.querySelector('.titles a');
-      // firstArticleLink.classList.add('active');
-    } else {
-      console.log('ActiveArticleLink', ActiveArticleLink);
+    if (ActiveArticleLink != null) {
       ActiveArticleLink.classList.add('active');
     }
 
@@ -174,7 +165,6 @@
 
     /*  add html from allTags to tagList */
     tagList.innerHTML = allTags.join('\n');
-    console.log('allTagsCounter', allTagsCounter);
   };
 
   const calculateTagsParams = function (tagsCounter) {
@@ -206,7 +196,7 @@
     // remove active class from all tags
     /* get clicked tag element*/
     const clickedElement = this;
-    console.log('clickedElement:', clickedElement);
+
     /* get href attribute from clicked tag */
     const href = clickedElement.getAttribute('href');
     /* extract tag from href attribute */
@@ -218,7 +208,6 @@
     // add active class to all tags with clicked tag
     /* find all tags with the same tag */
     const newActiveTags = document.querySelectorAll(`a[href="#tag-${tag}"]`);
-    console.log('newActiveTags:', newActiveTags);
 
     /* Loop over tags and add active class */
     for (let tag of newActiveTags) {
@@ -227,16 +216,15 @@
     // regenerate article list with active tags only
     /* create a new selector that selects all articles having class .post and data-tags containing tag */
     const newArticleSelector = `.post[data-tags~="${tag}"]`;
-    console.log('newArticleSelector:', newArticleSelector);
+
     /* call new modified generateTags function */
     generateTitleLinks(newArticleSelector);
   };
 
   const generateAuthors = function () {
-    console.log('generateAuthors');
     /* find all articles */
     const articles = document.querySelectorAll(optArticleSelector);
-    console.log('articles:', articles);
+
     /* START LOOP: for every article: */
     for (let article of articles) {
       /* find tags wrapper (list)*/
@@ -249,7 +237,6 @@
       const authorID = articleAuthor.replace(' ', '-');
       const authorLink = `by <a href="#author-${authorID}">${articleAuthor}</a>`;
       author.innerHTML = authorLink;
-      console.log('author:', authorLink);
     }
   };
 
@@ -293,7 +280,7 @@
 
     /* get clicked tag element*/
     const clickedElement = this;
-    console.log('clickedElement:', clickedElement);
+
     /* get href attribute from clicked tag */
     const href = clickedElement.getAttribute('href');
     /* extract author from href attribute */
@@ -308,7 +295,6 @@
     const newActiveAuthor = document.querySelectorAll(
       `a[href="#author-${authorID}"]`
     );
-    console.log('newActiveAuthor:', newActiveAuthor);
 
     /* Loop over Author and add active class */
     for (let tag of newActiveAuthor) {
@@ -317,7 +303,7 @@
     // regenerate article list with active tags only
     /* create a new selector that selects all articles having class .post and data-author containing tag */
     const newArticleSelector = `.post[data-author="${author}"]`;
-    console.log('newArticleSelector:', newArticleSelector);
+
     /* call new modified generateTags function */
     generateTitleLinks(newArticleSelector);
   };
