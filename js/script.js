@@ -164,7 +164,7 @@
     for (let tag in allTagsCounter) {
       const tagCount = allTagsCounter[tag];
       const tagClass = calculateTagClass(tagCount, tagsParams);
-      const tagLinkHTML = `<li><a href="#tag-${tag}" class="${tagClass}">${tag}</a> <span>(${tagCount})</span></li>`;
+      const tagLinkHTML = `<li><a href="#tag-${tag}" class="${tagClass}">${tag}</a> </li>`;
       allTags.push(tagLinkHTML);
     }
 
