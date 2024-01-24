@@ -16,6 +16,9 @@
     articleLink: Handlebars.compile(
       document.querySelector('#template-article-link').innerHTML
     ),
+    tagLink: Handlebars.compile(
+      document.querySelector('#template-tag-link').innerHTML
+    ),
   };
 
   const changeActiveArticle = function (event) {
@@ -115,22 +118,11 @@
       const articleTagsArray = articleTags.split(' ');
 
       /* make html variable with empty string */
-      let html = '';
-      /* START LOOP: for each tag */
       for (let tag of articleTagsArray) {
         /* generate HTML of the link */
-        // const linkHTML = `<li><a href="#tag-${tag}">${tag}</a></li>`;
-        const linkHTML = '<li><a href="#tag-' + tag + '">' + tag + '</a></li>';
-
-        /* add generated code to html variable */
-        // DISCUSS - why does html = html +  linkHTML; result in differently formatted list?
-        html = html + '\n' + linkHTML;
-        /* END LOOP: for each tag */
+        const linkHTML = templates.tagLink({ tag: tag });
+        tagList.insertAdjacentHTML('beforeend', linkHTML);
       }
-      /* insert HTML of all the links into the tags wrapper */
-      tagList.innerHTML = html;
-
-      /* END LOOP: for every article: */
     }
   };
 
