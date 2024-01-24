@@ -22,6 +22,9 @@
     authorLink: Handlebars.compile(
       document.querySelector('#template-author-link').innerHTML
     ),
+    tagCloudList: Handlebars.compile(
+      document.querySelector('#template-tag-cloud-list').innerHTML
+    ),
   };
 
   const changeActiveArticle = function (event) {
@@ -152,21 +155,22 @@
       }
     }
 
-    /* construct HTML of the all the links with counts */
-    let allTags = [];
+    /* construct object with all tag classes */
     const tagsParams = calculateTagsParams(allTagsCounter);
+    const tagClassess = { tags: [] };
     for (let tag in allTagsCounter) {
       const tagCount = allTagsCounter[tag];
       const tagClass = calculateTagClass(tagCount, tagsParams);
-      const tagLinkHTML = `<li><a href="#tag-${tag}" class="${tagClass}">${tag}</a> </li>`;
-      allTags.push(tagLinkHTML);
+      tagClassess.tags.push({
+        tag: tag,
+        tagClass: tagClass,
+      });
     }
+    const tagCloudListHTML = templates.tagCloudList(tagClassess);
 
     /* find list of tags in right column */
     const tagList = document.querySelector(optTagsListSelector);
-
-    /*  add html from allTags to tagList */
-    tagList.innerHTML = allTags.join('\n');
+    tagList.innerHTML = tagCloudListHTML;
   };
 
   const calculateTagsParams = function (tagsCounter) {
@@ -283,7 +287,7 @@
   const authorClickHandler = function (event) {
     /* prevent default action for this event */
     event.preventDefault();
-    console.log('authorClickHandler');
+
     /* get clicked tag element*/
     const clickedElement = this;
 
@@ -350,7 +354,7 @@
   const addClickListenersToAuthors = function () {
     /* find all links to authors */
     const authors = document.querySelectorAll('a[href^="#author-"]');
-    console.log(authors);
+
     /* START LOOP: for each link */
     for (let author of authors) {
       /* add authorClickHandler as event listener for that link */
