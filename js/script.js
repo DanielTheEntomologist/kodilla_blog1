@@ -19,6 +19,9 @@
     tagLink: Handlebars.compile(
       document.querySelector('#template-tag-link').innerHTML
     ),
+    authorLink: Handlebars.compile(
+      document.querySelector('#template-author-link').innerHTML
+    ),
   };
 
   const changeActiveArticle = function (event) {
@@ -234,8 +237,12 @@
 
       /* set author element inner html to articleAuthor */
       const authorID = articleAuthor.replace(' ', '-');
-      const authorLink = `by <a href="#author-${authorID}">${articleAuthor}</a>`;
-      author.innerHTML = authorLink;
+      // const authorLink = `by <a href="#author-${authorID}">${articleAuthor}</a>`;
+      const authorLinkHTML = templates.authorLink({
+        id: authorID,
+        author: articleAuthor,
+      });
+      author.insertAdjacentHTML('beforeend', authorLinkHTML);
     }
   };
 
@@ -261,8 +268,8 @@
 
     for (let author in authorsArticleCounter) {
       const articleCount = authorsArticleCounter[author];
-
-      const authorLinkHTML = `<li><a href="#author-${author}">${author}</a><span> (${articleCount})</span> </li>`;
+      const authorID = author.replace(' ', '-');
+      const authorLinkHTML = `<li><a href="#author-${authorID}">${author}</a><span> (${articleCount})</span> </li>`;
       allAuthors.push(authorLinkHTML);
     }
 
@@ -276,7 +283,7 @@
   const authorClickHandler = function (event) {
     /* prevent default action for this event */
     event.preventDefault();
-
+    console.log('authorClickHandler');
     /* get clicked tag element*/
     const clickedElement = this;
 
@@ -343,7 +350,7 @@
   const addClickListenersToAuthors = function () {
     /* find all links to authors */
     const authors = document.querySelectorAll('a[href^="#author-"]');
-
+    console.log(authors);
     /* START LOOP: for each link */
     for (let author of authors) {
       /* add authorClickHandler as event listener for that link */
