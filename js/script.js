@@ -12,6 +12,12 @@
     optCloudClassPrefix = 'tag-size-',
     optAuthorsList = '.authors.list';
 
+  const templates = {
+    articleLink: Handlebars.compile(
+      document.querySelector('#template-article-link').innerHTML
+    ),
+  };
+
   const changeActiveArticle = function (event) {
     /* prevent default action for event */
     event.preventDefault();
@@ -52,14 +58,13 @@
 
     /* remove contents of titleList */
     const titleList = document.querySelector(optTitleListSelector);
+
     titleList.innerHTML = '';
 
     /* find all the articles and save them to variable: articles */
     const articles = document.querySelectorAll(
       optArticleSelector + additionalTitleListSelector
     );
-
-    let html = '';
 
     for (let article of articles) {
       /* get the article id */
@@ -72,13 +77,15 @@
       const articleTitleText = articleTitle.innerHTML;
 
       /* create HTML of the link */
-      const linkHTML = `<li><a href="#${articleId}"><span>${articleTitleText}</span></a></li>`;
+      const linkHTML = templates.articleLink({
+        id: articleId,
+        title: articleTitleText,
+      });
+      // `<li><a href="#${articleId}"><span>${articleTitleText}</span></a></li>`;
 
       /* insert link into html variable */
-      html = html + linkHTML;
+      titleList.insertAdjacentHTML('beforeend', linkHTML);
     }
-
-    titleList.innerHTML = html;
 
     /* try to select previously active article link */
     const ActiveArticleLink = document.querySelector(

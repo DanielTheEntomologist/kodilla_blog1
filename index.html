@@ -18,6 +18,11 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css" />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"
+      defer
+    ></script>
     <script src="js/script.js" defer></script>
 
     <title>Kodilla Module 5-6 Blog</title>
@@ -30,36 +35,12 @@
           <aside class="sidebar">
             <h2 class="section-title">All posts</h2>
             <ul class="list titles">
-              <li>
-                <a href="#article-1" class="active"><span>Article 1</span></a>
-              </li>
-              <li>
-                <a href="#article-2"><span>Article 2</span></a>
-              </li>
-              <li>
-                <a href="#article-3"><span>Article 3</span></a>
-              </li>
-              <li>
-                <a href="#article-4"><span>Article 4</span></a>
-              </li>
-              <li>
-                <a href="#article-5"><span>Article 5</span></a>
-              </li>
-              <li>
-                <a href="#article-6"><span>Article 6</span></a>
-              </li>
-              <li>
-                <a href="#article-7"><span>Article 7</span></a>
-              </li>
-              <li>
-                <a href="#article-8"><span>Article 8</span></a>
-              </li>
-              <li>
-                <a href="#article-9"><span>Article 9</span></a>
-              </li>
-              <li>
-                <a href="#article-10"><span>Article 10</span></a>
-              </li>
+              <script
+                id="template-article-link"
+                type="text/x-handlebars-template"
+              >
+                <li><a href='#{{id}}'><span>{{title}}</span></a></li>
+              </script>
             </ul>
           </aside>
           <section class="posts">
