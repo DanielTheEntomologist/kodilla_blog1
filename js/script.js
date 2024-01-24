@@ -25,6 +25,9 @@
     tagCloudList: Handlebars.compile(
       document.querySelector('#template-tag-cloud-list').innerHTML
     ),
+    authorList: Handlebars.compile(
+      document.querySelector('#template-author-list').innerHTML
+    ),
   };
 
   const changeActiveArticle = function (event) {
@@ -268,20 +271,24 @@
     }
 
     /* construct HTML of the all the links with counts */
-    let allAuthors = [];
+    let allAuthors = { authors: [] };
 
     for (let author in authorsArticleCounter) {
       const articleCount = authorsArticleCounter[author];
       const authorID = author.replace(' ', '-');
-      const authorLinkHTML = `<li><a href="#author-${authorID}">${author}</a><span> (${articleCount})</span> </li>`;
-      allAuthors.push(authorLinkHTML);
+
+      allAuthors.authors.push({
+        author: author,
+        authorID: authorID,
+        articleCount: articleCount,
+      });
     }
 
     /* find list of tags in right column */
     const authorsList = document.querySelector(optAuthorsList);
 
     /*  add html from allTags to tagList */
-    authorsList.innerHTML = allAuthors.join('\n');
+    authorsList.innerHTML = templates.authorList(allAuthors);
   };
 
   const authorClickHandler = function (event) {
